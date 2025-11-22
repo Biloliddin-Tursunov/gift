@@ -1,0 +1,42 @@
+/* GLOBAL CSS RESET / Barcha standart stillarni o'chirish */
+* {
+    /* Standart margin va padding'larni nolga tushirish */
+    margin: 0;
+    padding: 0;
+
+    /* Box-sizing ni border-box ga o'rnatish - bu layoutni boshqarish uchun juda muhim! */
+    /* Padding va borderlar elementning o'lchamiga qo'shilmasligini ta'minlaydi */
+    box-sizing: border-box;
+}
+
+/* Standart shrift va body stillarini o'rnatish */
+body {
+    line-height: 1.5; /* O'qishni qulaylashtirish */
+    -webkit-font-smoothing: antialiased; /* Shriftni tiniqlashtirish */
+    min-height: 100vh; /* Sahifa minimal balandligini to'liq ekran qilish */
+    background-color: white; /* Agar biron joyda fon qolib ketgan bo'lsa, oq rangga o'tkazish */
+}
+
+/* Rasmlar va media elementlari */
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%; /* Mobil qurilmalarda rasm chiqib ketmasligi uchun */
+}
+
+/* Sarlavhalarni, tugmalarni va inputlarni standart holatga keltirish */
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+/* Linklarning standart xususiyatlarini o'chirish (agar kerak bo'lsa) */
+a {
+    color: inherit;
+    text-decoration: none;
+}

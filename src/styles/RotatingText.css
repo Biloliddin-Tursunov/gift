@@ -1,0 +1,60 @@
+/* RotatingText.css */
+
+.center-container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white; /* Oq fon */
+    margin: 0;
+    padding: 0;
+}
+
+.rotating-text-wrapper {
+    font-size: 4em; /* Kattaroq shrift o'lchami */
+    font-weight: 700;
+    display: flex;
+    gap: 10px; /* HI va So'z orasidagi masofa */
+    font-family: serif; /* Serif shrifti (rasmdagidek) */
+}
+
+/* HI so'zi */
+.hi-static {
+    color: #333; /* Qora yoki to'q kulrang */
+}
+
+/* Almashinuvchi so'z */
+.word-animated {
+    display: inline-block;
+    min-width: 250px; /* So'zlarni almashganda joyni ushlab turish uchun */
+    transition: color 0.5s ease; /* Ranglarning silliq o'zgarishi */
+}
+
+/* Kursor Animatsiyasi */
+.typing-cursor {
+    display: inline-block;
+    margin-left: 2px;
+    opacity: 1;
+    animation: blink 0.7s infinite; /* Yonib-o'chuvchi animatsiya */
+    color: inherit; /* Kursor rangini so'z rangida ushlab turish */
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Kichikroq ekranlar uchun */
+@media (max-width: 600px) {
+    .rotating-text-wrapper {
+        font-size: 2.5em;
+    }
+}
