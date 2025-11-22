@@ -1,60 +1,56 @@
-/* RotatingText.css */
+/* src/styles/RotatingText.css */
 
 .center-container {
-    height: 100vh;
-    width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: white; /* Oq fon */
-    margin: 0;
-    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: #f8f9fa;
 }
 
 .rotating-text-wrapper {
-    font-size: 4em; /* Kattaroq shrift o'lchami */
-    font-weight: 700;
     display: flex;
-    gap: 10px; /* HI va So'z orasidagi masofa */
-    font-family: serif; /* Serif shrifti (rasmdagidek) */
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    font-family: "Georgia", serif;
 }
 
-/* HI so'zi */
 .hi-static {
-    color: #333; /* Qora yoki to'q kulrang */
+    color: #212529;
+    margin-right: 15px;
+    letter-spacing: -2px;
 }
 
-/* Almashinuvchi so'z */
 .word-animated {
-    display: inline-block;
-    min-width: 250px; /* So'zlarni almashganda joyni ushlab turish uchun */
-    transition: color 0.5s ease; /* Ranglarning silliq o'zgarishi */
+    transition: color 0.3s ease-in-out;
+    letter-spacing: -2px;
 }
 
-/* Kursor Animatsiyasi */
 .typing-cursor {
     display: inline-block;
-    margin-left: 2px;
-    opacity: 1;
-    animation: blink 0.7s infinite; /* Yonib-o'chuvchi animatsiya */
-    color: inherit; /* Kursor rangini so'z rangida ushlab turish */
+    vertical-align: middle;
+    width: 5px;
+    height: 1.2em;
+    margin-left: 5px;
+    background-color: currentColor;
+    animation: blink 0.7s infinite;
 }
 
 @keyframes blink {
-    0% {
+    0%,
+    100% {
         opacity: 1;
     }
     50% {
         opacity: 0;
     }
-    100% {
-        opacity: 1;
-    }
 }
 
-/* Kichikroq ekranlar uchun */
 @media (max-width: 600px) {
     .rotating-text-wrapper {
-        font-size: 2.5em;
+        font-size: 2.5rem;
     }
 }

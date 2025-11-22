@@ -1,6 +1,4 @@
-// src/App.jsx
-
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
     BrowserRouter as Router,
     Routes,
@@ -8,42 +6,40 @@ import {
     Navigate,
     useLocation,
 } from "react-router-dom";
-import { AnimatePresence } from "framer-motion"; // 1. Import qildik
+import { AnimatePresence } from "framer-motion";
 
 import Verification from "./components/Verification";
 import Gift from "./components/Gift";
 
-// Protected Route
+// --- 1. HIMOYALANGAN ROUTE KOMPONENTI ---
 const ProtectedRoute = ({ isVerified, children }) => {
+    // Agar tasdiqlangan bo'lsa, ichidagi komponentni ko'rsatadi
     if (isVerified) {
         return children;
     }
+    // Aks holda, Kirish sahifasiga yo'naltiradi
     return <Navigate to="/" />;
 };
 
-// 2. Animatsiya uchun maxsus Routes komponenti
-// useLocation() faqat Router ichida ishlagani uchun buni alohida qildik
-const AnimatedRoutes = () => {
-    const location = useLocation();
-
-    // Kirish holatini (State) shu yerda yoki App da saqlash mumkin.
-    // Keling, oddiylik uchun state ni shu yerga olib o'tamiz yoki props orqali olamiz.
-    // Lekin App komponentida turgani yaxshiroq. Quyida App komponentini ko'ring.
-
-    // Eslatma: State'ni App dan props orqali olib kelishimiz kerak.
-    // Shuning uchun AnimatedRoutes ni App ichida emas, to'g'ridan-to'g'ri render qilamiz.
-    return null;
-};
-
+// --- 2. ASOSIY APP KOMPONENTI (STATE BOSHQARUVI) ---
 function App() {
-    // Holatni saqlash
+    // Holatni saqlash: Sahifa yuklanganda sessionStorage dan o'qib olamiz
     const [isVerified, setIsVerified] = useState(() => {
-        return localStorage.getItem("isVerified") === "true";
+        // 'true' string qiymatini tekshiramiz
+        return sessionStorage.getItem("isVerified") === "true";
     });
 
+    // SessionStorage ga yozish va React State ni yangilash uchun universal funksiya
     const handleVerificationStatus = (status) => {
         setIsVerified(status);
-        localStorage.setItem("isVerified", status);
+
+        if (status) {
+            // Agar true bo'lsa, sessionda saqlaymiz
+            sessionStorage.setItem("isVerified", "true");
+        } else {
+            // Agar false bo'lsa (masalan, Logout tugmasi bosilganda), tozalaymiz
+            sessionStorage.removeItem("isVerified");
+        }
     };
 
     return (
@@ -56,23 +52,31 @@ function App() {
     );
 }
 
-// 3. Routing va Animatsiya mantiqini birlashtirgan komponent
+// --- 3. ANIMATSIYA VA ROUTING MANTIQI ---
 function AppContent({ isVerified, handleVerificationStatus }) {
-    const location = useLocation(); // Router ichida bo'lgani uchun ishlaydi
+    const location = useLocation(); // Joriy URL ni olish
 
     return (
-        // mode="wait" - Eski sahifa to'liq ketmaguncha yangisi kirmaydi (silliq o'tish uchun)
+        // mode="wait": Eski sahifa animatsiyasi tugamasdan yangisi kirmaydi
         <AnimatePresence mode="wait">
+            {/* location va key={location.pathname} framer-motion uchun muhim */}
             <Routes location={location} key={location.pathname}>
+                {/* / (Verification) sahifasi */}
                 <Route
                     path="/"
                     element={
-                        <Verification
-                            setIsVerified={handleVerificationStatus}
-                        />
+                        // Agar allaqachon Verified bo'lsa, to'g'ridan-to'g'ri /gift ga yo'naltiramiz
+                        isVerified ? (
+                            <Navigate to="/gift" />
+                        ) : (
+                            <Verification
+                                setIsVerified={handleVerificationStatus}
+                            />
+                        )
                     }
                 />
 
+                {/* /gift (Himoyalangan sahifa) */}
                 <Route
                     path="/gift"
                     element={
@@ -82,6 +86,7 @@ function AppContent({ isVerified, handleVerificationStatus }) {
                     }
                 />
 
+                {/* Boshqa barcha noma'lum yo'nalishlarni (404) Kirish sahifasiga qaytaramiz */}
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
         </AnimatePresence>

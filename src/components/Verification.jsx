@@ -104,6 +104,10 @@ function Verification({ setIsVerified }) {
             inputEmail.toLowerCase().trim() ===
             SECRET_EMAIL.toLowerCase().trim()
         ) {
+            // ✅ YANGI QOSHILGAN QISM:
+            // Brauzer xotirasiga (session) "tasdiqlandi" deb yozib qo'yamiz
+            sessionStorage.setItem("isVerified", "true");
+
             setIsVerified(true);
             navigate("/gift");
         } else {

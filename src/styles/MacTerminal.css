@@ -1,0 +1,112 @@
+/* 🖥 ASOSIY OYNA */
+.mac-terminal {
+    /* O'lchamlarni ixchamlashtiramiz */
+    width: 90%;
+    max-width: 900px; /* Juda cho'zilib ketmasligi uchun */
+    height: 60vh; /* Ekranning 60% qismini egallaydi (juda katta emas) */
+    min-height: 400px; /* Juda kichik ham bo'lib qolmaydi */
+
+    /* MUHIM: Terminalning o'z orqa foni */
+    background-color: #0d1117; /* GitHub Dark foni (Qora) */
+
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); /* Chiroyli soya */
+
+    /* Ichki tuzilish */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: "Menlo", "Monaco", "Courier New", monospace;
+    margin: 0 auto; /* O'rtada turishi uchun */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Nozik chegara */
+}
+
+/* 🟢 HEADER (Yuqori qism) */
+.terminal-header {
+    background: linear-gradient(to bottom, #21262d, #161b22);
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    flex-shrink: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Tugmachalar */
+.buttons {
+    display: flex;
+    gap: 8px;
+}
+.btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.red {
+    background-color: #ff5f56;
+}
+.yellow {
+    background-color: #ffbd2e;
+}
+.green {
+    background-color: #27c93f;
+}
+
+/* Sarlavha */
+.terminal-title {
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: #8b949e;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* 📝 BODY (Matn qismi) */
+.terminal-body {
+    flex: 1;
+    padding: 25px;
+    overflow-y: auto;
+
+    /* Matn stili */
+    font-size: 1.1rem; /* O'rtacha shrift */
+    line-height: 1.6;
+    color: #c9d1d9; /* Oqish matn */
+    text-align: left;
+}
+
+/* Qatorlar */
+.command-line {
+    margin-bottom: 8px;
+}
+
+.prompt {
+    color: #58a6ff;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.cursor {
+    display: inline-block;
+    width: 10px;
+    height: 20px;
+    background-color: #c9d1d9;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.blink {
+    animation: blink-anim 1s infinite;
+}
+
+@keyframes blink-anim {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
