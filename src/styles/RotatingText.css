@@ -1,56 +1,171 @@
-/* src/styles/RotatingText.css */
-
+/* --- ASOSIY KONTEYNER (KOSMOS FONI) --- */
 .center-container {
+    width: 100%;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    width: 100vw;
-    background-color: #f8f9fa;
+    position: relative; /* Psevdo-elementlar uchun */
+    overflow: hidden; /* Ekranda chiqib ketgan planetalar kesiladi */
+
+    /* 1. Rasmdagi kabi To'q Binafsha Kosmos Gradienti */
+    background: radial-gradient(circle at center, #2e1a47 0%, #1a0b2e 100%);
+
+    /* 2. Yulduzlar (CSS Pattern orqali) */
+    background-image: radial-gradient(white 1px, transparent 1px),
+        radial-gradient(rgba(255, 255, 255, 0.7) 1px, transparent 1px);
+    background-size: 50px 50px, 100px 100px;
+    background-position: 0 0, 40px 60px;
+
+    /* Yulduzlar harakati */
+    animation: starsMove 100s linear infinite;
 }
 
+/* --- PLANETALARNI CHIZISH (HTMLsiz, faqat CSS) --- */
+
+/* 1-PLANETA: Katta Pushti (O'ng tepada) */
+.center-container::before {
+    content: "";
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    top: -60px;
+    right: -60px;
+    border-radius: 50%;
+
+    /* Rasmdagi pushti-qizil ranglar */
+    background: linear-gradient(135deg, #e65c7b 0%, #c43a5b 100%);
+
+    /* Planeta chiziqlari (Stripes) */
+    box-shadow: inset -20px -20px 60px rgba(0, 0, 0, 0.3),
+        /* Soya */ 0 0 30px rgba(230, 92, 123, 0.4); /* Yog'du */
+
+    /* Suzish animatsiyasi */
+    animation: floatPlanet1 8s ease-in-out infinite alternate;
+    z-index: 0;
+}
+
+/* 2-PLANETA: Uzukli Sariq/Olovrang (Chap pastda) */
+.center-container::after {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    bottom: 40px;
+    left: 40px;
+    border-radius: 50%;
+
+    /* Rasmdagi olovrang */
+    background: linear-gradient(135deg, #f0a05d 0%, #d67d3e 100%);
+
+    /* Uzuk effekti (Box Shadow yordamida) */
+    box-shadow: 0 0 0 15px rgba(255, 255, 255, 0.05),
+        /* Xira uzuk */ inset -10px -10px 40px rgba(0, 0, 0, 0.3);
+
+    /* Suzish animatsiyasi */
+    animation: floatPlanet2 10s ease-in-out infinite alternate-reverse;
+    z-index: 0;
+}
+
+/* --- TEXT WRAPPER (PLANETALAR USTIDA TURISHI KERAK) --- */
 .rotating-text-wrapper {
+    position: relative;
+    z-index: 10; /* Planetalar ustiga chiqish */
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 4.5rem; /* Matn kattaligi */
+    font-weight: 800;
+    color: white;
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Soya */
     display: flex;
-    font-size: 4rem;
-    font-weight: 700;
-    line-height: 1.2;
-    text-align: center;
-    font-family: "Georgia", serif;
+    align-items: center;
+    letter-spacing: 2px;
 }
 
+/* "Hi" so'zi */
 .hi-static {
-    color: #212529;
-    margin-right: 15px;
-    letter-spacing: -2px;
+    margin-right: 20px;
+    color: rgba(255, 255, 255, 0.9);
 }
 
+/* O'zgaruvchi so'z */
 .word-animated {
-    transition: color 0.3s ease-in-out;
-    letter-spacing: -2px;
+    display: inline-flex;
+    align-items: center;
+    /* Rang JS dan keladi, lekin bu yerda soya beramiz */
+    text-shadow: 0 0 20px currentColor; /* So'z rangi bilan bir xil yog'du */
 }
 
+/* Kursor */
 .typing-cursor {
     display: inline-block;
-    vertical-align: middle;
     width: 5px;
-    height: 1.2em;
-    margin-left: 5px;
-    background-color: currentColor;
-    animation: blink 0.7s infinite;
+    height: 1em;
+    background-color: white;
+    margin-left: 10px;
+    border-radius: 2px;
+    animation: blink 0.8s step-end infinite;
 }
 
-@keyframes blink {
-    0%,
-    100% {
-        opacity: 1;
+/* --- ANIMATSIYALAR --- */
+
+/* Yulduzlar sekin siljishi */
+@keyframes starsMove {
+    from {
+        background-position: 0 0, 40px 60px;
     }
+    to {
+        background-position: 1000px 1000px, 1040px 1060px;
+    }
+}
+
+/* Katta Pushti planeta suzishi */
+@keyframes floatPlanet1 {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    100% {
+        transform: translateY(30px) rotate(5deg);
+    }
+}
+
+/* Kichik Olovrang planeta suzishi */
+@keyframes floatPlanet2 {
+    0% {
+        transform: translateY(0px) scale(1);
+    }
+    100% {
+        transform: translateY(-40px) scale(1.05);
+    }
+}
+
+/* Kursor o'chib-yonishi */
+@keyframes blink {
     50% {
         opacity: 0;
     }
 }
 
-@media (max-width: 600px) {
+/* Mobil moslashuv */
+@media (max-width: 768px) {
     .rotating-text-wrapper {
         font-size: 2.5rem;
+        flex-direction: column;
+    }
+    .hi-static {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    .center-container::before {
+        /* Mobil uchun planetani kichraytirish */
+        width: 150px;
+        height: 150px;
+        top: -30px;
+        right: -30px;
+    }
+    .center-container::after {
+        width: 100px;
+        height: 100px;
+        bottom: 20px;
+        left: 20px;
     }
 }
