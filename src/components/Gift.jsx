@@ -6,6 +6,7 @@ import "../styles/Gift.css";
 import RotatingText from "./RotatingText";
 import MacTerminal from "./MacTerminal";
 import MemoriesSection from "./MemoriesSection";
+import DeepSeaSection from "./DeepSeaSection";
 
 // --- RASMLARNI AUTO-IMPORT (Preload uchun) ---
 // Bu kod assets papkasidagi barcha rasmlar linkini bitta massivga yig'adi
@@ -135,10 +136,8 @@ function Gift() {
                         <RotatingText />
                     </div>
 
-                    {/* 2-Section:  */}
                     <MemoriesSection allImages={allImageUrls} />
-
-                    {/* 3-Section:  */}
+                    <DeepSeaSection />
                     <MacTerminal />
                 </motion.div>
             )}

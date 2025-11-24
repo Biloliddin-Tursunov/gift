@@ -1,0 +1,185 @@
+/* --- 1. KONTEYNER --- */
+.deep-sea-container {
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    overflow: hidden;
+    scroll-snap-align: start;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+}
+
+.background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        circle,
+        rgba(0, 40, 80, 0.2) 0%,
+        rgba(0, 10, 20, 0.6) 100%
+    );
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* TYPING TITLE */
+.intro-typing-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: sans-serif;
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    z-index: 2000;
+    text-align: center;
+    white-space: nowrap;
+}
+.intro-typing-title .cursor {
+    display: inline-block;
+    width: 3px;
+    height: 1em;
+    background-color: #fff;
+    margin-left: 5px;
+    animation: blink 1s infinite;
+}
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+/* --- 🔥 XABARLAR ASOSIY STILI --- */
+.telegram-msg {
+    position: absolute;
+
+    background-color: #ffffff;
+    color: #000000;
+
+    padding: 10px 16px;
+    border-radius: 18px;
+    border-bottom-left-radius: 4px;
+
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial,
+        sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    cursor: pointer;
+    user-select: none;
+    will-change: transform;
+
+    /* Paydo bo'lish */
+    opacity: 0;
+    animation: fadeInMsg 1s forwards;
+
+    /* Scale o'zgarishi silliq bo'lishi uchun */
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        filter 0.3s, z-index 0s;
+}
+
+@keyframes fadeInMsg {
+    to {
+        opacity: 1;
+    }
+}
+
+/* --- 🔥 1. SPECIAL WORDS (Maxsus So'zlar) --- */
+/* Talab: 1.2 -> 1.7 */
+.telegram-msg.special-word {
+    z-index: 60; /* Eng oldinda */
+    transform: translate(-50%, -50%) scale(1.2); /* Base */
+    border: 2px solid rgba(0, 122, 255, 0.3); /* Biroz ajratish uchun */
+    font-weight: 600;
+}
+.telegram-msg.special-word:hover {
+    transform: translate(-50%, -50%) scale(1.7) !important; /* Hover */
+    z-index: 3000 !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+/* --- 🔥 2. LONG TEXT (Katta Xabarlar) --- */
+/* Talab: 0.7 -> 1.0 */
+.telegram-msg.long-text {
+    z-index: 50; /* Media ustida, Special ostida */
+    max-width: 280px;
+    transform: translate(-50%, -50%) scale(0.7); /* Base */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.telegram-msg.long-text::before {
+    /* Dumcha */
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: -6px;
+    width: 10px;
+    height: 16px;
+    background-color: #ffffff;
+    border-bottom-right-radius: 10px;
+    clip-path: polygon(50% 0, 100% 100%, 100% 0);
+    z-index: -1;
+}
+.telegram-msg.long-text:hover {
+    transform: translate(-50%, -50%) scale(1) !important; /* Hover */
+    z-index: 3000 !important;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* --- 🔥 3. MEDIA (Rasm/Video) --- */
+/* Talab: 0.7 -> 1.0, Orqa fonda */
+.telegram-msg.media {
+    z-index: 5; /* Eng orqada */
+    padding: 5px;
+    transform: translate(-50%, -50%) scale(0.7); /* Base */
+
+    /* Rangsiz va xira */
+    filter: grayscale(60%) opacity(0.8);
+    background-color: rgba(255, 255, 255, 0.9);
+}
+.telegram-msg.media:hover {
+    transform: translate(-50%, -50%) scale(1) !important; /* Hover */
+
+    /* Rangi qaytadi */
+    filter: grayscale(0%) opacity(1) !important;
+    background-color: #ffffff !important;
+    z-index: 3000 !important;
+}
+
+.media-content {
+    width: 100%;
+    max-width: 150px;
+    border-radius: 12px;
+    display: block;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+.title-msg {
+    font-weight: 600;
+    color: #007aff;
+    margin-bottom: 4px;
+    display: block;
+    font-size: 13px;
+}
