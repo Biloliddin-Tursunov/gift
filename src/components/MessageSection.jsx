@@ -7,7 +7,10 @@ const API_ENDPOINT = "/api/send-email";
 const MessageSection = () => {
     const [status, setStatus] = useState("");
 
-    // Formni boshqarish funksiyasi
+    // src/components/MessageSection.jsx (handleSubmit funksiyasini yangilash)
+
+    // ... (boshqa kodlar) ...
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus("Yuborilmoqda...");
@@ -26,17 +29,29 @@ const MessageSection = () => {
 
             if (response.ok) {
                 setStatus("✅ Xabar muvaffaqiyatli yuborildi!");
-                textarea.value = ""; // Maydonni tozalash
+                textarea.value = "";
             } else {
-                const errorData = await response.json();
-                setStatus(`❌ Xato: ${errorData.message || "Yuborilmadi."}`);
+                // 🔥 JSON Parsing Xatosini Tuzatish
+                const contentType = response.headers.get("content-type");
+
+                if (contentType && contentType.includes("application/json")) {
+                    const errorData = await response.json();
+                    setStatus(
+                        `❌ Xato: ${errorData.message || "Yuborilmadi."}`
+                    );
+                } else {
+                    // 405 (Not Allowed) kabi xatolarni ushlaymiz
+                    setStatus(
+                        `❌ Xato: Server xabarini qabul qilib bo'lmadi (Status: ${response.status}).`
+                    );
+                }
             }
         } catch (error) {
             setStatus("❌ Tarmoq xatosi. Keyinroq urinib ko'ring.");
-            console.log(error);
         }
     };
 
+    // ... (qolgan kodlar) ...
     return (
         <div className="message-container">
             <div className="message-wrapper">

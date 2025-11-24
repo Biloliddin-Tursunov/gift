@@ -1,8 +1,17 @@
-// api/send-email.js yoki functions/send-email.js
+// api/send-email.js (to'liq matn)
 
 import nodemailer from "nodemailer";
 
 export default async function handler(req, res) {
+    // 🔥 CORS preflight (OPTIONS) so'rovini qabul qilish
+    if (req.method === "OPTIONS") {
+        res.setHeader("Allow", "POST, OPTIONS");
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+        res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+        return res.status(200).end(); // 200 OK qaytarish
+    }
+
     if (req.method !== "POST") {
         return res.status(405).json({ message: "Method Not Allowed" });
     }
@@ -16,19 +25,17 @@ export default async function handler(req, res) {
     }
 
     try {
-        // Nodemailer transportini yaratish
         let transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: import.meta.env.EMAIL_USER, // .env dan olinadi
-                pass: import.meta.env.EMAIL_PASS, // .env dan olinadi
+                user: import.meta.env.EMAIL_USER,
+                pass: import.meta.env.EMAIL_PASS,
             },
         });
 
-        // Email yuborish
         let info = await transporter.sendMail({
-            from: import.meta.env.EMAIL_USER, // Kimdan
-            to: import.meta.env.EMAIL_USER, // Kimga (O'zingizga yuborasiz)
+            from: import.meta.env.EMAIL_USER,
+            to: import.meta.env.EMAIL_USER,
             subject: "Yangi Xabar: Maxsus Sovg'a Formasidan",
             text: `Do'stingizdan kelgan xabar: \n\n${message}`,
             html: `<h1>Do'stingizdan yangi xabar!</h1><p><strong>Xabar:</strong> ${message}</p>`,
