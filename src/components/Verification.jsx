@@ -155,7 +155,7 @@ function Verification({ setIsVerified }) {
 
                 <h1>Restricted Access</h1>
                 <p className="subtitle">
-                    Verification required to view this content.
+                    Enter the email address you wrote to my email address.🐙👽🌙
                 </p>
 
                 {/* INPUT SECTION */}
@@ -168,7 +168,7 @@ function Verification({ setIsVerified }) {
                             setError("");
                         }}
                         onKeyDown={handleKeyDown}
-                        placeholder="name@example.com"
+                        placeholder="name@🐙👽🌙.com"
                         className={error ? "input-error" : ""}
                     />
                 </div>

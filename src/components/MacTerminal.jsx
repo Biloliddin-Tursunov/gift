@@ -2,7 +2,46 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import "../styles/MacTerminal.css";
 
-// 📝 GAPLAR
+// 📜 NAME DEFINITION TEXT (Moved outside the component)
+const BILOL_MEANING_TEXT = `
+    "Bilal" (Arabic: بلال) is a name whose original meaning signifies "wetness," "moisture," "water," or "something that delights the soul." It originates from the verb "balal" (بلل), which means "to become wet" or "to moisten."
+
+    In Islamic history, this name is most famously associated with Bilal ibn Rabah (r.a.) — one of the first slaves to embrace Islam, later known as the Muazzin (caller to prayer) of the Prophet Muhammad (peace be upon him).
+
+    For this reason, the name "Bilal" is also used among Muslims as a symbol of loyalty, faith, patience, and purity.
+    That is, this name spiritually carries the meaning of "moistening" the soul, which means giving faith and life.
+`;
+
+// 🔥 MODAL COMPONENT IS DECLARED OUTSIDE
+const NameModal = ({ onClose }) => (
+    <div className="custom-modal-overlay" onClick={onClose}>
+        <motion.div
+            className="custom-modal-content"
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -50, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+                <h3>Name Meaning: Bilal (بلال)</h3>
+                <button className="close-btn" onClick={onClose}>
+                    &times;
+                </button>
+            </div>
+            <div className="modal-body">
+                {/* Text is split by newline characters */}
+                {BILOL_MEANING_TEXT.split("\n").map((paragraph, idx) => (
+                    <p key={idx}>{paragraph}</p>
+                ))}
+                <p className="modal-footer-text">
+                    (Press the **Escape** key to close)
+                </p>
+            </div>
+        </motion.div>
+    </div>
+);
+
+// 📝 GAPLAR (O'zgarmadi)
 const MESSAGES = [
     "sudo initiate_protocol --heart",
     "Accessing secure memories...",
@@ -19,13 +58,17 @@ const MESSAGES = [
     "~> and exchanging friendship bracelets was postponed until next year.",
     "~> The plans you made for me were also postponed.",
     "~> I am sorry for this. All the blame lies with my laziness and incompetence.",
+
     "~> I definitely promise to meet you.",
     "~> I don't know when, but we will meet.",
-    "~> ",
-    "~> System status: HAPPY ❤️",
+
+    "~> I want to tell you a truth.",
+    "~> I recently met with a teacher from Arabia and asked the meaning of my name since it's Arabic.",
+    "~> And my name is not 'New Moon' like it says on Google. Sorry, sorry, big sorry.",
+    "~> To know its true meaning, press the Enter key.",
 ];
 
-// ⏱ YOZISH TEZLIGI (Kattaroq raqm = Sekinroq)
+// ⏱ YOZISH TEZLIGI
 const TYPING_SPEED = 80;
 
 const sectionStyle = {
@@ -46,20 +89,19 @@ const MacTerminal = () => {
     const [lineIndex, setLineIndex] = useState(0);
     const [charIndex, setCharIndex] = useState(0);
 
+    // 🔥 MODAL STATE (O'zgarmadi)
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     // --- REFS ---
     const scrollRef = useRef(null);
     const containerRef = useRef(null);
 
-    // 🔥 MUHIM O'ZGARISH:
-    // `once: false` qildik. Agar ekrandan chiqib ketsangiz, isInView = false bo'ladi.
-    // `amount: 0.5` - Terminalning kamida 50% qismi ko'ringandagina ishlaydi.
     const isInView = useInView(containerRef, { once: false, amount: 0.5 });
 
-    // --- TYPING LOGIC ---
+    // --- TYPING LOGIC (O'zgarmadi) ---
     useEffect(() => {
-        // Agar ekranda ko'rinmasa (boshqa joyga skroll qilsangiz), funksiya to'xtaydi.
+        // ... (Typing logic) ...
         if (!isInView) return;
-
         if (lineIndex >= MESSAGES.length) return;
 
         const timeout = setTimeout(() => {
@@ -74,12 +116,35 @@ const MacTerminal = () => {
                 setCharIndex(0);
                 setLineIndex((prev) => prev + 1);
             }
-        }, TYPING_SPEED); // 👈 Tezlik shu yerdan olinadi (150ms)
+        }, TYPING_SPEED);
 
         return () => clearTimeout(timeout);
-    }, [charIndex, lineIndex, isInView]); // isInView o'zgarganda effekt qayta ishlaydi
+    }, [charIndex, lineIndex, isInView]);
 
-    // --- AUTO SCROLL ---
+    // 🔥 KEY LISTENER LOGIC (O'zgarmadi)
+    useEffect(() => {
+        const handleEnterPress = (event) => {
+            // Agar Enter bosilsa VA Typing tugagan bo'lsa
+            if (
+                event.key === "Enter" &&
+                isInView &&
+                lineIndex >= MESSAGES.length
+            ) {
+                if (!isModalOpen) {
+                    setIsModalOpen(true);
+                }
+            }
+            // Agar Escape bosilsa, modalni yopish
+            if (event.key === "Escape") {
+                setIsModalOpen(false);
+            }
+        };
+
+        window.addEventListener("keydown", handleEnterPress);
+        return () => window.removeEventListener("keydown", handleEnterPress);
+    }, [isInView, lineIndex, isModalOpen]);
+
+    // --- AUTO SCROLL (O'zgarmadi) ---
     useEffect(() => {
         if (scrollRef.current) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -88,6 +153,9 @@ const MacTerminal = () => {
 
     return (
         <div style={sectionStyle} ref={containerRef}>
+            {/* 🔥 MODAL ENDI TASHQARIDAGI KOMPONENTGA MUROJAAT QILADI */}
+            {isModalOpen && <NameModal onClose={() => setIsModalOpen(false)} />}
+
             <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}

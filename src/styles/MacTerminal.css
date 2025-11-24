@@ -1,112 +1,171 @@
-/* 🖥 ASOSIY OYNA */
+/* --- 1. TERMINAL GLOBAL STIL --- */
 .mac-terminal {
-    /* O'lchamlarni ixchamlashtiramiz */
-    width: 90%;
-    max-width: 900px; /* Juda cho'zilib ketmasligi uchun */
-    height: 60vh; /* Ekranning 60% qismini egallaydi (juda katta emas) */
-    min-height: 400px; /* Juda kichik ham bo'lib qolmaydi */
-
-    /* MUHIM: Terminalning o'z orqa foni */
-    background-color: #0d1117; /* GitHub Dark foni (Qora) */
-
-    border-radius: 12px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); /* Chiroyli soya */
-
-    /* Ichki tuzilish */
+    width: 70%;
+    max-width: 800px;
+    height: 500px;
+    background-color: #1e1e1e; /* To'q kulrang fon */
+    border-radius: 8px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    font-family: "Menlo", "Monaco", "Courier New", monospace;
-    margin: 0 auto; /* O'rtada turishi uchun */
-    border: 1px solid rgba(255, 255, 255, 0.1); /* Nozik chegara */
+    position: relative;
+    font-family: "Consolas", "Courier New", monospace; /* Terminal shrifti */
 }
 
-/* 🟢 HEADER (Yuqori qism) */
+/* --- 2. TERMINAL BOSHQARUV PANELI (HEADER) --- */
 .terminal-header {
-    background: linear-gradient(to bottom, #21262d, #161b22);
-    padding: 12px 15px;
+    height: 30px;
+    background-color: #3c3c3c; /* Yorug'roq boshqaruv paneli */
     display: flex;
     align-items: center;
-    position: relative;
-    flex-shrink: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 0 10px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    user-select: none;
 }
 
-/* Tugmachalar */
 .buttons {
     display: flex;
-    gap: 8px;
+    gap: 7px;
 }
+
 .btn {
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    display: inline-block;
+    cursor: pointer;
+    transition: opacity 0.2s;
 }
-.red {
+.btn.red {
     background-color: #ff5f56;
 }
-.yellow {
+.btn.yellow {
     background-color: #ffbd2e;
 }
-.green {
+.btn.green {
     background-color: #27c93f;
 }
 
-/* Sarlavha */
 .terminal-title {
-    position: absolute;
-    left: 0;
-    right: 0;
+    flex-grow: 1;
     text-align: center;
-    color: #8b949e;
-    font-size: 13px;
-    font-weight: 600;
+    color: #c7c7c7;
+    font-size: 0.85rem;
+    font-weight: 500;
 }
 
-/* 📝 BODY (Matn qismi) */
+/* --- 3. TERMINAL TANA QISMI (BODY/CONTENT) --- */
 .terminal-body {
-    flex: 1;
-    padding: 25px;
-    overflow-y: auto;
-
-    /* Matn stili */
-    font-size: 1.1rem; /* O'rtacha shrift */
-    line-height: 1.6;
-    color: #c9d1d9; /* Oqish matn */
-    text-align: left;
+    flex-grow: 1;
+    padding: 15px;
+    color: #c7c7c7;
+    overflow-y: auto; /* Vertikal skroll */
+    font-size: 1rem;
+    line-height: 1.5;
+    white-space: pre-wrap; /* Matnni o'rash */
 }
 
-/* Qatorlar */
+.terminal-body::-webkit-scrollbar {
+    display: none; /* Skroll barlarni yashirish */
+}
+
 .command-line {
-    margin-bottom: 8px;
+    display: flex;
+    align-items: baseline;
+    min-height: 1.5rem; /* Bo'sh satrlar uchun joy */
 }
 
 .prompt {
-    color: #58a6ff;
-    margin-right: 10px;
-    font-weight: bold;
+    color: #5c6aff; /* Yorqin prompt rangi */
+    margin-right: 8px;
 }
 
+/* --- 4. KURSOR VA YOZISH EFEKTI --- */
 .cursor {
     display: inline-block;
-    width: 10px;
-    height: 20px;
-    background-color: #c9d1d9;
+    width: 8px;
+    height: 1em;
     margin-left: 5px;
-    vertical-align: middle;
+    background-color: #c7c7c7;
+    animation: cursorBlink 1s step-end infinite;
+    vertical-align: bottom;
 }
 
-.blink {
-    animation: blink-anim 1s infinite;
+.cursor.blink {
+    animation: cursorBlink 0.8s step-end infinite;
 }
 
-@keyframes blink-anim {
-    0%,
-    100% {
-        opacity: 1;
-    }
+@keyframes cursorBlink {
     50% {
         opacity: 0;
     }
+}
+
+/* --- 5. MODAL STIL (Qo'shimcha) --- */
+.custom-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.custom-modal-content {
+    background: #282c34;
+    border: 2px solid #5c6aff;
+    color: #c7c7c7;
+    max-width: 600px;
+    width: 90%;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    line-height: 1.6;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #444;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: #5c6aff;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: #c7c7c7;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.close-btn:hover {
+    color: white;
+}
+
+.modal-body p {
+    margin-bottom: 1em;
+    text-indent: 1em;
+    font-size: 0.95rem;
+}
+
+.modal-footer-text {
+    text-align: right;
+    font-size: 0.85rem;
+    margin-top: 20px;
+    color: #888;
 }
