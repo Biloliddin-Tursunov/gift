@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import "../styles/Verification.css";
 
-const SECRET_EMAIL = "sennoume@icloud.com";
+const SECRET_EMAIL = "12345";
 
 // 🌟 FAQAT ISHLOVCHI 3 TA STIKER 🌟
 const BASE_ICONS = [
