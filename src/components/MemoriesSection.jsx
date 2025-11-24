@@ -115,7 +115,7 @@ const MemoriesSection = ({ allImages }) => {
                             width: "100%",
                             display: "flex",
                             flexDirection: "column",
-                            // Gap kerak emas, chunki CSSda joylashtirganmiz
+                            gap: "20px",
                             padding: "0",
                         }}
                         initial={{ opacity: 0, y: 100 }}
