@@ -1,0 +1,122 @@
+/* --- XOTIRALAR BO'LIMI ASOSIY STILLARI --- */
+.memories-container {
+    height: 100vh;
+    width: 100vw;
+    background-color: #050505;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    scroll-snap-align: start;
+}
+
+/* --- MATN STILI (O'ZGARMADI) --- */
+.intro-text {
+    color: white;
+    font-size: clamp(1.5rem, 5vw, 3.5rem);
+    text-align: center;
+    font-family: "Courier New", monospace;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    position: absolute;
+    z-index: 10;
+    padding: 20px;
+}
+
+/* --- RASMLAR QATORI (MARQUEE) --- */
+.marquee-row {
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+
+    /* 👇 O'ZGARISH 1: "margin-bottom: 25px" o'rniga foiz ishlatamiz.
+       Shunda ekran kichik bo'lsa, orasi ham kichrayadi va sig'adi. */
+    margin-bottom: 0vh;
+}
+
+/* --- YURADIGAN YO'LAKCHA (O'ZGARMADI) --- */
+.marquee-track {
+    display: flex;
+    gap: 15px;
+    width: max-content;
+}
+
+/* Animatsiya turlari */
+.scroll-left {
+    animation: scrollLeft 60s linear infinite;
+}
+.scroll-right {
+    animation: scrollRight 60s linear infinite;
+}
+
+.marquee-row:hover .marquee-track {
+    animation-play-state: paused;
+    cursor: pointer;
+}
+
+@keyframes scrollLeft {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes scrollRight {
+    0% {
+        transform: translateX(-50%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* --- RASMLAR DIZAYNI --- */
+.memory-img {
+    /* 👇 O'ZGARISH 2: "280px" o'rniga "26vh" qildim.
+       26vh * 3 qator = 78vh (ekranning 78 foizi).
+       Qolgan joy oraliq va matnga qoladi.
+       Bu rasm o'lchamini deyarli o'zgartirmaydi, lekin 100% sig'diradi. */
+    height: 30vh;
+
+    width: auto;
+    aspect-ratio: 3/2;
+    object-fit: cover;
+    border-radius: 12px;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    filter: brightness(0.7) grayscale(30%);
+}
+
+/* Hover effekti (O'ZGARMADI) */
+.memory-img:hover {
+    filter: brightness(1) grayscale(0%);
+    transform: scale(1.05);
+    z-index: 5;
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+}
+
+/* --- MODAL (O'ZGARMADI) --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+
+.modal-img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 15px;
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}

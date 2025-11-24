@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import RotatingText from "./RotatingText";
 import MacTerminal from "./MacTerminal";
 import "../styles/Gift.css";
+import MemoriesSection from "./MemoriesSection";
 
 const rotatingSectionStyle = {
     height: "100vh",
@@ -27,8 +28,7 @@ function Gift() {
             <div style={rotatingSectionStyle}>
                 <RotatingText />
             </div>
-
-            {/* 2-Bozor: MacTerminal (O'zi tayyor section) */}
+            <MemoriesSection />
             <MacTerminal />
         </motion.div>
     );
