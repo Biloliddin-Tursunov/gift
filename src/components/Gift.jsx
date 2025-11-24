@@ -8,13 +8,14 @@ import MacTerminal from "./MacTerminal";
 import MemoriesSection from "./MemoriesSection";
 
 // --- RASMLARNI AUTO-IMPORT (Preload uchun) ---
+// Bu kod assets papkasidagi barcha rasmlar linkini bitta massivga yig'adi
 const imagesObj = import.meta.glob(
     "../assets/our_memories/*.{png,jpg,jpeg,JPG,PNG}",
     { eager: true }
 );
 const allImageUrls = Object.values(imagesObj).map((mod) => mod.default);
 
-// --- YUKLASH EKRANI KOMPONENTI ---
+// --- YUKLASH EKRANI (LOADING SCREEN) ---
 const LoadingScreen = ({ progress }) => {
     return (
         <motion.div
@@ -33,7 +34,7 @@ const LoadingScreen = ({ progress }) => {
                 color: "white",
                 fontFamily: "'Courier New', monospace",
             }}
-            exit={{ opacity: 0, y: -50 }} // Yuklash tugasa tepaga chiqib ketadi
+            exit={{ opacity: 0, y: -50 }}
             transition={{ duration: 0.8 }}>
             <motion.div
                 style={{
@@ -87,7 +88,6 @@ function Gift() {
             const img = new Image();
             img.src = src;
 
-            // Har bir rasm yuklanganda hisoblaymiz
             img.onload = () => {
                 loadedCount++;
                 const percentage = Math.round(
@@ -96,12 +96,11 @@ function Gift() {
                 setProgress(percentage);
 
                 if (loadedCount === totalImages) {
-                    // Hammasi yuklangach, ozgina kutib ochamiz (silliq bo'lishi uchun)
+                    // Hammasi yuklangach, 800ms kutib ochamiz
                     setTimeout(() => setIsLoading(false), 800);
                 }
             };
 
-            // Agar rasm yuklanmasa ham (xato bersa), baribir davom etsin
             img.onerror = () => {
                 loadedCount++;
                 if (loadedCount === totalImages) setIsLoading(false);
@@ -122,7 +121,7 @@ function Gift() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 1 }}>
-                    {/* 1-Section */}
+                    {/* 1-Section: Rotating Text */}
                     <div
                         style={{
                             height: "100vh",
@@ -135,10 +134,11 @@ function Gift() {
                         }}>
                         <RotatingText />
                     </div>
-                    {/* 2-Section */}
-                    <MemoriesSection />
 
-                    {/* 3-Section */}
+                    {/* 2-Section:  */}
+                    <MemoriesSection allImages={allImageUrls} />
+
+                    {/* 3-Section:  */}
                     <MacTerminal />
                 </motion.div>
             )}

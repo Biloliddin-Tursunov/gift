@@ -2,14 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import "../styles/Memories.css";
 
-// --- RASMLARNI AUTO-IMPORT ---
-const imagesObj = import.meta.glob(
-    "../assets/our_memories/*.{png,jpg,jpeg,JPG,PNG}",
-    { eager: true }
-);
-const allImages = Object.values(imagesObj).map((mod) => mod.default);
-
-// --- ALOHIDA QATOR KOMPONENTI (O'zgarmadi) ---
+// --- MARQUEE ROW (Qatorlar komponenti) ---
 const MarqueeRow = ({ images, direction, onImageClick }) => {
     const repeatedImages = [...images, ...images, ...images, ...images];
     return (
@@ -25,7 +18,7 @@ const MarqueeRow = ({ images, direction, onImageClick }) => {
                         alt="memory"
                         className="memory-img"
                         onClick={(e) => {
-                            e.stopPropagation();
+                            e.stopPropagation(); // Bosilganda modal yopilib ketmasligi uchun
                             onImageClick(src);
                         }}
                     />
@@ -36,68 +29,62 @@ const MarqueeRow = ({ images, direction, onImageClick }) => {
 };
 
 // --- ASOSIY KOMPONENT ---
-const MemoriesSection = () => {
+// allImages prop sifatida keladi
+const MemoriesSection = ({ allImages }) => {
     // --- STATE ---
     const [displayedText, setDisplayedText] = useState("");
     const [showImages, setShowImages] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
-
-    // 🔥 YANGI: Typing faqat bir marta ishlashi uchun state
     const [hasStartedTyping, setHasStartedTyping] = useState(false);
 
+    // Refni konteynerga ulash
     const containerRef = useRef(null);
     const isInView = useInView(containerRef, { once: true, amount: 0.5 });
 
     const fullText = "Memories related to you, those that are stored.";
 
-    // --- 🔥 MANTIQ (Tuzatilgan Typing) ---
+    // --- TYPING MANTIQI ---
     useEffect(() => {
-        // 1. Agar ko'rinmasa, yoki rasmlar chiqqan bo'lsa, yoki typing boshlangan bo'lsa -> TO'XTA
         if (!isInView || showImages || hasStartedTyping) return;
 
-        // 2. Boshlangani haqida belgi qo'yamiz
         setHasStartedTyping(true);
 
         let currentIndex = 0;
 
-        // 3. Rekursiv funksiya (Harflarni bittalab qo'shish)
         const typeNextChar = () => {
             if (currentIndex < fullText.length) {
-                // Keyingi harfni qo'shamiz (current index asosida)
                 const char = fullText.charAt(currentIndex);
                 setDisplayedText((prev) => prev + char);
                 currentIndex++;
-
-                // Keyingi harf uchun vaqt belgilaymiz (100ms)
                 setTimeout(typeNextChar, 100);
             } else {
-                // Matn tugadi. 2 soniya kutib, rasmlarni chiqaramiz.
                 setTimeout(() => {
                     setShowImages(true);
                 }, 2000);
             }
         };
 
-        // Typingni boshlash
         typeNextChar();
-    }, [isInView, showImages, hasStartedTyping]);
-    // Dependency arrayga e'tibor bering: faqat kerakli narsalar bor.
+    }, [isInView, showImages, hasStartedTyping]); // dependencyga faqat keraklilarni qo'shdik
 
-    // Rasmlarni 3 qatorga bo'lish (O'zgarmadi)
+    // --- RASMLARNI BO'LISH ---
     const rows = useMemo(() => {
         const row1 = [],
             row2 = [],
             row3 = [];
-        allImages.forEach((img, index) => {
-            if (index % 3 === 0) row1.push(img);
-            else if (index % 3 === 1) row2.push(img);
-            else row3.push(img);
-        });
+        // allImages prop bo'sh kelishi mumkin, shuning uchun tekshiramiz
+        if (allImages && allImages.length > 0) {
+            allImages.forEach((img, index) => {
+                if (index % 3 === 0) row1.push(img);
+                else if (index % 3 === 1) row2.push(img);
+                else row3.push(img);
+            });
+        }
         return { row1, row2, row3 };
-    }, []);
+    }, [allImages]);
 
     return (
-        // 🔥 Ref shu yerga ulangan bo'lishi SHART
+        // 🔥 Refni shu yerga ulash shart!
         <div className="memories-container" ref={containerRef}>
             <AnimatePresence mode="wait">
                 {/* 1-BOSQICH: MATN */}
@@ -112,9 +99,8 @@ const MemoriesSection = () => {
                         {displayedText.split("\n").map((line, i) => (
                             <span key={i} style={{ display: "block" }}>
                                 {line}
-                                {/* Kursor faqat yozilayotganda ko'rinadi */}
                                 {i === 1 && !showImages && (
-                                    <span className="typing-cursor">|</span>
+                                    <span className="typing-cursor"></span>
                                 )}
                             </span>
                         ))}
@@ -129,8 +115,8 @@ const MemoriesSection = () => {
                             width: "100%",
                             display: "flex",
                             flexDirection: "column",
-                            gap: "10px",
-                            padding: "10px 0",
+                            // Gap kerak emas, chunki CSSda joylashtirganmiz
+                            padding: "0",
                         }}
                         initial={{ opacity: 0, y: 100 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -154,7 +140,7 @@ const MemoriesSection = () => {
                 )}
             </AnimatePresence>
 
-            {/* 3-BOSQICH: KATTA RASM (MODAL) */}
+            {/* 3-BOSQICH: MODAL */}
             <AnimatePresence>
                 {selectedImage && (
                     <motion.div
