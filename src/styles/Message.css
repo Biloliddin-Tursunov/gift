@@ -1,104 +1,183 @@
-/* --- 1. ASOSIY KONTEYNER --- */
+/* ---- GLOBAL CONTAINER (TUNGI OSOMON + YULDUZLAR) ---- */
+
 .message-container {
-    height: 100vh;
-    width: 100vw;
-    position: relative;
-    scroll-snap-align: start;
-
-    /* Yapon uslubi: Oq, tinchlantiruvchi, yorug' fon */
-    background: #f8f8f8; /* Yumshoq oq rang */
-
+    min-height: 100vh;
+    padding: 40px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
+    background: radial-gradient(circle at top, #1a1b2f 0%, #0b0c18 70%);
+    position: relative;
+    /* sahifa scrollini bloklamaslik uchun visible */
+    overflow: visible;
+    scroll-snap-align: start;
 }
 
-/* --- 2. FORMA WRAPPERI (GO'YOKI WASI QOG'OZI) --- */
+/* --- YULDUZLAR --- */
+/* pseudo-elementlarga pointer-events: none qo'yib, ular interaktivlikni bloklamasin */
+.message-container::before,
+.message-container::after {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: transparent
+        url("https://raw.githubusercontent.com/VincentGarreau/particles.js/master/demo/img/particle.png")
+        repeat;
+    opacity: 0.15;
+    animation: floatStars 120s linear infinite;
+    pointer-events: none; /* <<< dekorativ, interaktiv emas */
+    top: -50%;
+    left: -50%;
+}
+
+.message-container::after {
+    animation-duration: 180s;
+    opacity: 0.25;
+}
+
+@keyframes floatStars {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-1000px);
+    }
+}
+
+/* ---- UCHAYOTGAN YULDUZLAR (SHOOTING STARS) ---- */
+
+/* pointer-events: none — yulduzlar scroll va kliklarga halaqit bermaydi.
+   will-change: transform performans uchun */
+.shooting-star {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 10px 4px white;
+    animation: shootingStar 3s linear infinite;
+    opacity: 0;
+    pointer-events: none; /* <<< MUHIM */
+    will-change: transform, opacity;
+}
+
+/* agar juda ko'p element sahifani siljitayotgan bo'lsa, ularni kichikroq, kamroq aniqlikda qiling */
+.shooting-star:nth-child(1) {
+    top: 20%;
+    left: 10%;
+    animation-delay: 1s;
+}
+.shooting-star:nth-child(2) {
+    top: 40%;
+    left: 60%;
+    animation-delay: 2.2s;
+}
+.shooting-star:nth-child(3) {
+    top: 70%;
+    left: 20%;
+    animation-delay: 3.4s;
+}
+.shooting-star:nth-child(4) {
+    top: 10%;
+    left: 80%;
+    animation-delay: 4.1s;
+}
+
+@keyframes shootingStar {
+    0% {
+        opacity: 0;
+        transform: translateX(-200px) translateY(-200px) scale(0.6);
+    }
+    10% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(1000px) translateY(600px) scale(1);
+    }
+}
+
+/* ---- MESSAGE WRAPPER (NOTION CARD STYLE) ---- */
+
 .message-wrapper {
-    max-width: 500px;
-    width: 90%;
-    padding: 35px;
-
-    /* Toza oq fon, engil soya */
-    background: #ffffff;
-    border-radius: 4px; /* O'tkir, minimalist burchaklar */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Yumshoq, yengil soya */
-
-    border: 1px solid #e0e0e0; /* Juda ingichka, sezilmas chegara */
-
-    /* Blur va boshqa og'ir effektlar olib tashlandi */
-    backdrop-filter: none;
+    width: 100%;
+    max-width: 680px;
+    background: rgba(20, 20, 30, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 40px;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.45);
+    /* agar sahifa ustiga chiqib qolayotgan bo'lsa, z-index qo'yib formani yuqoriga olib chiqamiz */
+    z-index: 5;
 }
 
-/* --- 3. TEXTLAR (QORA Siyoh Effekti) --- */
+/* ---- QOLGAN STIL (o'zgarmagan) ---- */
+
 .message-title {
-    color: #333; /* To'q kulrang/qora matn */
-    font-size: 2rem;
-    margin-bottom: 5px;
-    text-align: center;
-    text-shadow: none;
-    font-weight: 500;
+    font-size: 32px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 6px;
+    font-family: "Inter", sans-serif;
 }
-
 .message-subtitle {
-    color: #666; /* Yumshoqroq kulrang matn */
-    font-size: 0.95rem;
-    margin-bottom: 30px;
-    text-align: center;
-}
-
-/* --- 4. FORMA ELEMENTLARI (POK VA TOZA) --- */
-.message-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    font-size: 16px;
+    color: #c7c9d8;
+    margin-bottom: 25px;
+    font-family: "Inter", sans-serif;
 }
 
 .message-textarea {
     width: 100%;
-    padding: 15px;
-
-    /* Oq fon, minimalist chegara */
-    border: 1px solid #ccc;
-    border-radius: 0; /* O'tkir burchakli minimalist stil */
-
-    background: #ffffff;
-    color: #333;
-    font-size: 1rem;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 15px;
+    font-family: "Inter", sans-serif;
     resize: vertical;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    transition: all 0.2s ease;
 }
 
 .message-textarea:focus {
-    /* Focus bo'lganda ingichka qora chegara */
-    border-color: #555;
     outline: none;
-    box-shadow: 0 0 0 1px #555;
+    border-color: #5c6aff;
+    background: rgba(255, 255, 255, 0.07);
+    box-shadow: 0 0 0 3px rgba(92, 106, 255, 0.25);
 }
 
-/* --- 5. TUGMA (SUMI Siyohi Kabi) --- */
 .message-button {
+    margin-top: 16px;
     padding: 14px 20px;
-
-    /* Qora/To'q rang, yorug'lik effektlari olib tashlangan */
-    background: #333;
-    color: white;
+    width: 100%;
+    background: linear-gradient(135deg, #5d67ff, #2f38c4);
     border: none;
-    border-radius: 4px;
-    font-size: 1rem;
+    border-radius: 10px;
+    font-size: 17px;
     font-weight: 600;
+    color: white;
     cursor: pointer;
-    transition: background 0.2s, transform 0.2s;
+    font-family: "Inter", sans-serif;
+    transition: transform 0.15s ease, box-shadow 0.15s;
 }
 
 .message-button:hover {
-    background: #555; /* Hoverda biroz ochroq */
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(92, 106, 255, 0.4);
+}
+.message-button:disabled {
+    background: #444a69;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 .message-footer {
-    color: #999;
-    font-size: 0.8rem;
-    text-align: center;
-    margin-top: 15px;
+    margin-top: 14px;
+    font-size: 14px;
+    color: #aab0c9;
+    font-family: "Inter", sans-serif;
 }
