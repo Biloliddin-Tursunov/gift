@@ -4,10 +4,10 @@ import React, { useState, useEffect } from "react";
 import "../styles/RotatingText.css";
 
 const WORD_DATA = [
-    { word: "ALIEN", color: "#8935dc" },
     { word: "CHIUME", color: "#17a2b8" },
     { word: "JIGAR", color: "#ffc107" },
     { word: "HABIBI", color: "#dc3545" },
+    { word: "ALIEN", color: "#8935dc" },
     { word: "CHICHI", color: "#28a745" },
 ];
 

@@ -7,6 +7,7 @@ import RotatingText from "./RotatingText";
 import MacTerminal from "./MacTerminal";
 import MemoriesSection from "./MemoriesSection";
 import DeepSeaSection from "./DeepSeaSection";
+import MessageSection from "./MessageSection";
 
 // --- RASMLARNI AUTO-IMPORT (Preload uchun) ---
 // Bu kod assets papkasidagi barcha rasmlar linkini bitta massivga yig'adi
@@ -139,6 +140,7 @@ function Gift() {
                     <MemoriesSection allImages={allImageUrls} />
                     <DeepSeaSection />
                     <MacTerminal />
+                    <MessageSection />
                 </motion.div>
             )}
         </>

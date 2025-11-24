@@ -8,7 +8,21 @@ const MESSAGES = [
     "Accessing secure memories...",
     "Loading... [██████████] 100%",
     "--------------------------------",
-    "Sen men uchun alohida olamsan.",
+    "~> ",
+    "~> Hello, Jigar,",
+    "~> Are you not tired?!",
+    "~> I miss you very much.",
+    "~> I miss our telepathic conversations.",
+    "~> I miss you asking me various questions.",
+    "~> Sometimes I wonder if you forgot me and are spending time with your other friends.",
+    "~> Unfortunately, I couldn't visit your home country,",
+    "~> and exchanging friendship bracelets was postponed until next year.",
+    "~> The plans you made for me were also postponed.",
+    "~> I am sorry for this. All the blame lies with my laziness and incompetence.",
+    "~> I definitely promise to meet you.",
+    "~> I don't know when, but we will meet.",
+    "~> ",
+    "~> System status: HAPPY ❤️",
 ];
 
 // ⏱ YOZISH TEZLIGI (Kattaroq raqm = Sekinroq)

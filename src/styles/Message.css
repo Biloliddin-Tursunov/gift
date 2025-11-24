@@ -1,0 +1,104 @@
+/* --- 1. ASOSIY KONTEYNER --- */
+.message-container {
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    scroll-snap-align: start;
+
+    /* Yapon uslubi: Oq, tinchlantiruvchi, yorug' fon */
+    background: #f8f8f8; /* Yumshoq oq rang */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- 2. FORMA WRAPPERI (GO'YOKI WASI QOG'OZI) --- */
+.message-wrapper {
+    max-width: 500px;
+    width: 90%;
+    padding: 35px;
+
+    /* Toza oq fon, engil soya */
+    background: #ffffff;
+    border-radius: 4px; /* O'tkir, minimalist burchaklar */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Yumshoq, yengil soya */
+
+    border: 1px solid #e0e0e0; /* Juda ingichka, sezilmas chegara */
+
+    /* Blur va boshqa og'ir effektlar olib tashlandi */
+    backdrop-filter: none;
+}
+
+/* --- 3. TEXTLAR (QORA Siyoh Effekti) --- */
+.message-title {
+    color: #333; /* To'q kulrang/qora matn */
+    font-size: 2rem;
+    margin-bottom: 5px;
+    text-align: center;
+    text-shadow: none;
+    font-weight: 500;
+}
+
+.message-subtitle {
+    color: #666; /* Yumshoqroq kulrang matn */
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* --- 4. FORMA ELEMENTLARI (POK VA TOZA) --- */
+.message-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.message-textarea {
+    width: 100%;
+    padding: 15px;
+
+    /* Oq fon, minimalist chegara */
+    border: 1px solid #ccc;
+    border-radius: 0; /* O'tkir burchakli minimalist stil */
+
+    background: #ffffff;
+    color: #333;
+    font-size: 1rem;
+    resize: vertical;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.message-textarea:focus {
+    /* Focus bo'lganda ingichka qora chegara */
+    border-color: #555;
+    outline: none;
+    box-shadow: 0 0 0 1px #555;
+}
+
+/* --- 5. TUGMA (SUMI Siyohi Kabi) --- */
+.message-button {
+    padding: 14px 20px;
+
+    /* Qora/To'q rang, yorug'lik effektlari olib tashlangan */
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.message-button:hover {
+    background: #555; /* Hoverda biroz ochroq */
+    transform: translateY(-1px);
+}
+
+.message-footer {
+    color: #999;
+    font-size: 0.8rem;
+    text-align: center;
+    margin-top: 15px;
+}
