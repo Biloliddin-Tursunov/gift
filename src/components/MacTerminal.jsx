@@ -53,6 +53,14 @@ const MESSAGES = [
     "~> I miss you very much.",
     "~> I miss our telepathic conversations.",
     "~> I miss you asking me various questions.",
+
+    // 👇 YANGI QO'SHILGAN MAQTUV QISMI (Gap)
+    "~> I have never met a person like you in my life.",
+    "~> Who understands and supports me better than I understand myself.",
+    "~> Who loves the world of animals and nature as much as you do.",
+    "~> There are not many people in this world who treat everyone well and do good deeds equally.",
+    // 👆 YANGI QO'SHILGAN MAQTUV QISMI (Gap)
+
     "~> Sometimes I wonder if you forgot me and are spending time with your other friends.",
     "~> Unfortunately, I couldn't visit your home country,",
     "~> and exchanging friendship bracelets was postponed until next year.",
@@ -66,6 +74,9 @@ const MESSAGES = [
     "~> I recently met with a teacher from Arabia and asked the meaning of my name since it's Arabic.",
     "~> And my name is not 'New Moon' like it says on Google. Sorry, sorry, big sorry.",
     "~> To know its true meaning, press the Enter key.",
+
+    "~> ",
+    "~> System status: HAPPY ❤️",
 ];
 
 // ⏱ YOZISH TEZLIGI
