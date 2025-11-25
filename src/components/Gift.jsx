@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "../styles/Gift.css";
+import "../styles/ScrollIndicator.css";
 
 // Komponentlar
 import RotatingText from "./RotatingText";
@@ -8,16 +9,16 @@ import MacTerminal from "./MacTerminal";
 import MemoriesSection from "./MemoriesSection";
 import DeepSeaSection from "./DeepSeaSection";
 import MessageSection from "./MessageSection";
+import ScrollIndicator from "./ScrollIndicator";
 
 // --- RASMLARNI AUTO-IMPORT (Preload uchun) ---
-// Bu kod assets papkasidagi barcha rasmlar linkini bitta massivga yig'adi
 const imagesObj = import.meta.glob(
     "../assets/our_memories/*.{png,jpg,jpeg,JPG,PNG}",
     { eager: true }
 );
 const allImageUrls = Object.values(imagesObj).map((mod) => mod.default);
 
-// --- YUKLASH EKRANI (LOADING SCREEN) ---
+// --- YUKLASH EKRANI ---
 const LoadingScreen = ({ progress }) => {
     return (
         <motion.div
@@ -50,7 +51,6 @@ const LoadingScreen = ({ progress }) => {
             </motion.div>
             <p style={{ opacity: 0.7 }}>Xotiralar yuklanmoqda...</p>
 
-            {/* Progress bar chizig'i */}
             <div
                 style={{
                     width: "200px",
@@ -75,6 +75,10 @@ const LoadingScreen = ({ progress }) => {
 function Gift() {
     const [isLoading, setIsLoading] = useState(true);
     const [progress, setProgress] = useState(0);
+    const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
+    const [totalSections, setTotalSections] = useState(0);
+
+    const containerRef = useRef(null);
 
     // --- RASMLARNI PRELOAD QILISH MANTIQI ---
     useEffect(() => {
@@ -98,7 +102,6 @@ function Gift() {
                 setProgress(percentage);
 
                 if (loadedCount === totalImages) {
-                    // Hammasi yuklangach, 800ms kutib ochamiz
                     setTimeout(() => setIsLoading(false), 800);
                 }
             };
@@ -110,6 +113,39 @@ function Gift() {
         });
     }, []);
 
+    // --- SECTIONLARNI KUZATISH (IntersectionObserver) ---
+    useEffect(() => {
+        if (!containerRef.current) return;
+
+        const sections = containerRef.current.querySelectorAll(".section");
+        setTotalSections(sections.length);
+
+        if (sections.length === 0) return;
+
+        const observerOptions = {
+            root: null,
+            rootMargin: "0px",
+            threshold: 0.6, // sectionning 60% ko'rinsa indeks o'zgaradi
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const idx = Array.from(sections).indexOf(entry.target);
+                    if (idx !== -1) {
+                        setCurrentSectionIndex(idx);
+                    }
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach((sec) => observer.observe(sec));
+
+        return () => {
+            observer.disconnect();
+        };
+    }, [isLoading]); // loading tugagach sectionlar DOMda bo'ladi va observer ishlaydi
+
     return (
         <>
             <AnimatePresence>
@@ -118,13 +154,15 @@ function Gift() {
 
             {!isLoading && (
                 <motion.div
+                    ref={containerRef}
                     className="gift-container"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 1 }}>
-                    {/* 1-Section: Rotating Text */}
+                    {/* Har bir section .section bilan o'ralgan va 100vh bo'lishi kerak */}
                     <div
+                        className="section"
                         style={{
                             height: "100vh",
                             width: "100vw",
@@ -137,10 +175,34 @@ function Gift() {
                         <RotatingText />
                     </div>
 
-                    <MemoriesSection allImages={allImageUrls} />
-                    <DeepSeaSection />
-                    <MacTerminal />
-                    <MessageSection />
+                    <div
+                        className="section"
+                        style={{ height: "100vh", width: "100vw" }}>
+                        <MemoriesSection allImages={allImageUrls} />
+                    </div>
+
+                    <div
+                        className="section"
+                        style={{ height: "100vh", width: "100vw" }}>
+                        <DeepSeaSection />
+                    </div>
+
+                    <div
+                        className="section"
+                        style={{ height: "100vh", width: "100vw" }}>
+                        <MacTerminal />
+                    </div>
+
+                    <div
+                        className="section"
+                        style={{ height: "100vh", width: "100vw" }}>
+                        <MessageSection />
+                    </div>
+
+                    {/* ScrollIndicator faqat oxirgi sectiondan oldin ko'rinadi */}
+                    <ScrollIndicator
+                        isVisible={currentSectionIndex < totalSections - 1}
+                    />
                 </motion.div>
             )}
         </>
